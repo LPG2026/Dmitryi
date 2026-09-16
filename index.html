@@ -8,30 +8,42 @@
 <link rel="icon" type="image/svg+xml" href="./logo.svg">
 <link rel="apple-touch-icon" href="./logo.svg">
 <meta name="theme-color" content="#0b5394">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="База знаний LPG">
 <style>
-  body { margin:0; background:#eef3f8; font-family:Arial,sans-serif; display:flex; flex-direction:column;
-         align-items:center; justify-content:center; min-height:100vh; padding:20px; box-sizing:border-box; }
-  img { width:150px; height:150px; background:#fff; border-radius:30px;
-        box-shadow:0 4px 14px rgba(0,0,0,.15); padding:12px; box-sizing:border-box; }
-  h1 { font-size:20px; margin:18px 0 4px; color:#17252f; }
-  div.hint { color:#6b7a86; font-size:13px; text-align:center; margin-bottom:22px; max-width:320px; }
+  body { margin:0; font-family:Arial,sans-serif; display:flex; flex-direction:column;
+         align-items:center; justify-content:center; min-height:100vh; padding:20px; box-sizing:border-box; color:#17252f;
+         background: linear-gradient(rgba(238,243,248,.55), rgba(238,243,248,.55)),
+                     url('./bg-app.jpg') center / cover fixed no-repeat #eef3f8; }
+  img.logo { width:150px; height:150px; background:#fff; border-radius:30px;
+             box-shadow:0 4px 14px rgba(0,0,0,.15); padding:12px; box-sizing:border-box; }
+  h1 { font-size:20px; margin:18px 0 4px; }
+  div.hint { color:#4a5a66; font-size:13px; text-align:center; margin-bottom:22px; max-width:320px; line-height:1.5; }
   a.open { display:block; width:100%; max-width:320px; background:#0b5394; color:#fff; text-align:center;
            text-decoration:none; padding:14px 0; border-radius:12px; font-size:17px; }
+  a.open:active { background:#083c72; }
 </style>
 </head>
 <body>
-<img src="./logo.svg" alt="LPG">
-<h1>База знаний LPG</h1>
-<div class="hint">Тесты и чек-листы АГЗС / АЗС / Мойка<br>Вход только для номеров из списка предприятия<br><br>
-Меню браузера (<b>⋮</b>) → <b>«Установить приложение»</b></div>
-<a class="open" id="openbtn" href="#">Открыть приложение</a>
+  <img class="logo" src="./logo.svg" alt="LPG">
+  <h1>База знаний LPG</h1>
+  <div class="hint">Тесты и чек-листы АГЗС / АЗС / Мойка<br>Вход только для номеров из списка предприятия<br><br>
+    Меню браузера (<b>⋮</b>) → <b>«Установить приложение»</b></div>
+  <a class="open" id="openbtn" href="#">Открыть приложение</a>
 <script>
 var EXEC = "https://script.google.com/macros/s/AKfycbyhvDaXwkcOttVPUXMgIYeudvoPmSzsRZkJiZjSK_aN8dijRB8NTUc8lLNxIJIZQBQK/exec";
 document.getElementById('openbtn').href = EXEC;
-if (location.search.indexOf("open=1") !== -1 ||
-    (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
-    (window.matchMedia && window.matchMedia("(display-mode: fullscreen)").matches)) {
+var isStandalone = window.matchMedia && (
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.matchMedia("(display-mode: fullscreen)").matches
+);
+var wantOpen = location.search.indexOf("open=1") !== -1;
+var seen = localStorage.getItem("lpg_seen") === "1";
+if (isStandalone || wantOpen || seen) {
   location.replace(EXEC);
+} else {
+  localStorage.setItem("lpg_seen", "1");
 }
 </script>
 </body>
